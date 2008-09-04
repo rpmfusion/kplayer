@@ -1,9 +1,14 @@
 
+%define kdelibs kdelibs
+%if 0%{?fedora} > 6
+%define kdelibs kdelibs3
+%endif
+
 Name:           kplayer
 Epoch:	        1
-Version:        0.6.2
-Release:        4%{?dist}
-Summary:        A KDE media player based on MPlayer
+Version:        0.6.3
+Release:        2%{?dist}
+Summary:        A media player based on MPlayer
 
 Group:          Applications/Multimedia
 License:        GPLv3
@@ -13,7 +18,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  automake
 BuildRequires:  desktop-file-utils
-BuildRequires:  kdelibs3-devel
+BuildRequires:  %{kdelibs}-devel
 
 Requires:       mplayer
 #Requires(hint): libdvdcss
@@ -53,17 +58,17 @@ make %{?_smp_mflags}
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot}
 
 ## File lists
 # locale's
 %find_lang %{name} || touch %{name}.lang
 # HTML (1.0)
 HTML_DIR=$(kde-config --expandvars --install html)
-if [ -d $RPM_BUILD_ROOT$HTML_DIR ]; then
-for lang_dir in $RPM_BUILD_ROOT$HTML_DIR/* ; do
+if [ -d %{buildroot}$HTML_DIR ]; then
+for lang_dir in %{buildroot}$HTML_DIR/* ; do
   if [ -d $lang_dir ]; then
     lang=$(basename $lang_dir)
     echo "%lang($lang) $HTML_DIR/$lang/*" >> %{name}.lang
@@ -79,11 +84,11 @@ fi
 
 
 %check
-desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/kde/*.desktop ||:
+desktop-file-validate %{buildroot}%{_datadir}/applications/kde/*.desktop ||:
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 %post
@@ -115,9 +120,12 @@ update-desktop-database -q %{_datadir}/applications 2>/dev/null || :
 
 
 %changelog
+* Thu Sep 04 2008 Rex Dieter <rdieter@fedoraproject.org> - 1:0.6.3-2
+- kplayer-0.6.3
+- License: GPLv3
+
 * Sun Aug 03 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 1:0.6.2-4
 - rebuild
-- GPLv3
 
 * Fri Nov 02 2007 Rex Dieter <rdieter[AT]fedoraproject.org> 1:0.6.2-3
 - revert to kplayer-0.6.2 (+Epoch), newer releases are gplv3, which
