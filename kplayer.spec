@@ -6,14 +6,14 @@ Release:        4%{?dist}
 Summary:        A KDE media player based on MPlayer
 
 Group:          Applications/Multimedia
-License:        GPL
+License:        GPLv3
 URL:            http://kplayer.sourceforge.net/
 Source0:	http://osdn.dl.sourceforge.net/sourceforge/kplayer/kplayer-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  automake
 BuildRequires:  desktop-file-utils
-BuildRequires:  kdelibs-devel
+BuildRequires:  kdelibs3-devel
 
 Requires:       mplayer
 #Requires(hint): libdvdcss
@@ -117,6 +117,7 @@ update-desktop-database -q %{_datadir}/applications 2>/dev/null || :
 %changelog
 * Sun Aug 03 2008 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info - 1:0.6.2-4
 - rebuild
+- GPLv3
 
 * Fri Nov 02 2007 Rex Dieter <rdieter[AT]fedoraproject.org> 1:0.6.2-3
 - revert to kplayer-0.6.2 (+Epoch), newer releases are gplv3, which
