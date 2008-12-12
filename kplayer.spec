@@ -1,24 +1,20 @@
-
-%define kdelibs kdelibs
-%if 0%{?fedora} > 6
-%define kdelibs kdelibs3
-%endif
+%define cvsversion 20081211cvs
 
 Name:           kplayer
-Epoch:	        1
-Version:        0.6.3
-Release:        2%{?dist}
+Epoch:          1
+Version:        0.7.0
+Release:        1.%cvsversion%{?dist}
 Summary:        A media player based on MPlayer
-
 Group:          Applications/Multimedia
-License:        GPLv3
+License:        GPLv3+ and GFDL
 URL:            http://kplayer.sourceforge.net/
-Source0:	http://osdn.dl.sourceforge.net/sourceforge/kplayer/kplayer-%{version}.tar.bz2
+Source0:        %{name}-%{version}-%cvsversion.tar.bz2
+Source1:        %{name}-snapshot.sh
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
-BuildRequires:  automake
 BuildRequires:  desktop-file-utils
-BuildRequires:  %{kdelibs}-devel
+BuildRequires:  gettext
+BuildRequires:  kdelibs-devel
 
 Requires:       mplayer
 #Requires(hint): libdvdcss
@@ -39,38 +35,32 @@ KDE standards.  Features include
 
 
 %prep
-%setup -q
+%setup -q -n %{name}
 
-[ ! -f configure ] && \
-make -f admin/Makefile.common
+%{cmake_kde4} -DCMAKE_SKIP_RPATH:BOOL=ON .
 
 
 %build
-unset QTDIR || : ; . /etc/profile.d/qt.sh
-
-%configure \
-  --disable-rpath \
-  --enable-new-ldflags \
-  --disable-debug --disable-warnings \
-  --disable-dependancy-tracking --disable-final
-
-make %{?_smp_mflags}
-
+make %{?_smp_mflags} VERBOSE=1 
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot} 
 
 ## File lists
 # locale's
 %find_lang %{name} || touch %{name}.lang
 # HTML (1.0)
-HTML_DIR=$(kde-config --expandvars --install html)
-if [ -d $RPM_BUILD_ROOT$HTML_DIR ]; then
-for lang_dir in $RPM_BUILD_ROOT$HTML_DIR/* ; do
+HTML_DIR=$(kde4-config --expandvars --install html)
+if [ -d %{buildroot}$HTML_DIR ]; then
+for lang_dir in %{buildroot}$HTML_DIR/* ; do
   if [ -d $lang_dir ]; then
     lang=$(basename $lang_dir)
+    # Install HTML docs in the correct location and
+    mv $lang_dir $lang_dir.TMP
+    mkdir $lang_dir
+    mv $lang_dir.TMP $lang_dir/%{name}
     echo "%lang($lang) $HTML_DIR/$lang/*" >> %{name}.lang
     # replace absolute symlinks with relative ones
     pushd $lang_dir
@@ -82,44 +72,53 @@ for lang_dir in $RPM_BUILD_ROOT$HTML_DIR/* ; do
 done
 fi
 
+# Install servicemenus in the correct location:
+mkdir -p %{buildroot}%{_datadir}/kde4/services/ServiceMenus/
+mv %{buildroot}%{_datadir}/kde4/apps/konqueror/servicemenus/* \
+   %{buildroot}%{_datadir}/kde4/services/ServiceMenus/
+
 
 %check
-desktop-file-validate $RPM_BUILD_ROOT%{_datadir}/applications/kde/*.desktop ||:
+desktop-file-validate %{buildroot}%{_datadir}/applications/kde4/*.desktop ||:
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 
 %post
-for icon_theme in hicolor locolor ; do
-  touch --no-create %{_datadir}/icons/${icon_theme} 2> /dev/null ||:
-  gtk-update-icon-cache -q %{_datadir}/icons/${icon_theme} 2> /dev/null ||:
-done
+touch --no-create %{_datadir}/icons/hicolor 2> /dev/null ||:
+if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
+  %{_bindir}/gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
+fi
 update-desktop-database -q %{_datadir}/applications 2>/dev/null || :
 
+
 %postun
-for icon_theme in hicolor locolor ; do
-  touch --no-create %{_datadir}/icons/${icon_theme} 2> /dev/null ||:
-  gtk-update-icon-cache -q %{_datadir}/icons/${icon_theme} 2> /dev/null ||:
-done
+touch --no-create %{_datadir}/icons/hicolor 2> /dev/null ||:
+if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
+  %{_bindir}/gtk-update-icon-cache -q %{_datadir}/icons/hicolor 2> /dev/null ||:
+fi
 update-desktop-database -q %{_datadir}/applications 2>/dev/null || :
 
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
-%doc AUTHORS BUGS ChangeLog COPYING README TODO
-%{_bindir}/kplayer
-%{_datadir}/applications/kde/*kplayer.desktop
-%{_datadir}/apps/kplayer/
-%{_datadir}/apps/konqueror/servicemenus/*.desktop
+%doc AUTHORS BUGS ChangeLog COPYING* README TODO
+%{_bindir}/%{name}
+%{_datadir}/applications/kde4/*%{name}.desktop
+%{_datadir}/kde4/apps/%{name}/
+%{_datadir}/kde4/services/*%{name}*.desktop
+%{_datadir}/kde4/services/ServiceMenus/
 %{_datadir}/icons/hicolor/*/*/*
-%{_datadir}/icons/locolor/*/*/*
-%{_datadir}/services/*kplayer*.desktop
-%{_libdir}/kde3/libkplayerpart.*
+%{_libdir}/kde4/lib%{name}part.*
 
 
 %changelog
+* Fri Dec 12 2008 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-1.20081211cvs
+- kplayer-0.7.0
+- License is GPLv3+ and GFDL
+
 * Thu Sep 04 2008 Rex Dieter <rdieter@fedoraproject.org> - 1:0.6.3-2
 - kplayer-0.6.3
 - License: GPLv3
