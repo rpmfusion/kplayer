@@ -3,7 +3,7 @@
 Name:           kplayer
 Epoch:          1
 Version:        0.7.0
-Release:        1.%cvsversion%{?dist}
+Release:        2.%cvsversion%{?dist}
 Summary:        A media player based on MPlayer
 Group:          Applications/Multimedia
 License:        GPLv3+ and GFDL
@@ -115,6 +115,9 @@ update-desktop-database -q %{_datadir}/applications 2>/dev/null || :
 
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1:0.7.0-2.20081211cvs
+- rebuild for new F11 features
+
 * Fri Dec 12 2008 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-1.20081211cvs
 - kplayer-0.7.0
 - License is GPLv3+ and GFDL
