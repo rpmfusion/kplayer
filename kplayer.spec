@@ -3,7 +3,7 @@
 Name:           kplayer
 Epoch:          1
 Version:        0.7.0
-Release:        3.%cvsversion%{?dist}
+Release:        4.%cvsversion%{?dist}
 Summary:        A media player based on MPlayer
 Group:          Applications/Multimedia
 License:        GPLv3+ and GFDL
@@ -121,6 +121,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Jan 03 2010 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-4.20081211cvs
+- Rebuild to workaround bug#1588
+
 * Sun Aug 15 2010 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-3.20081211cvs
 - Fix mimetypes in the .desktop file (RFBZ#1195)
 - Switch to modern scriptlets
