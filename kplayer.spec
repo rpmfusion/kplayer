@@ -121,7 +121,7 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
-* Mon Jan 03 2010 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-4.20081211cvs
+* Mon Jan 03 2011 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-4.20081211cvs
 - Rebuild to workaround bug#1588
 
 * Sun Aug 15 2010 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-3.20081211cvs
