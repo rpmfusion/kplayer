@@ -3,7 +3,7 @@
 Name:           kplayer
 Epoch:          1
 Version:        0.7.0
-Release:        4.%cvsversion%{?dist}
+Release:        5.%cvsversion%{?dist}
 Summary:        A media player based on MPlayer
 Group:          Applications/Multimedia
 License:        GPLv3+ and GFDL
@@ -45,6 +45,8 @@ KDE standards.  Features include
 
 %{cmake_kde4} -DCMAKE_SKIP_RPATH:BOOL=ON .
 
+# Fix documentation build
+sed -i 's|V4.1.2|V4.2|' doc/*/index.docbook
 
 %build
 make %{?_smp_mflags} VERBOSE=1 
@@ -121,6 +123,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon Jan 03 2011 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-5.20081211cvs
+- Fixed the documentation build
+
 * Mon Jan 03 2011 Orcan Ogetbil < orcanbahri [AT] yahoo [DOT] com> - 1:0.7.0-4.20081211cvs
 - Rebuild to workaround bug#1588
 
