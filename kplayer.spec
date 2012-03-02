@@ -3,7 +3,7 @@
 Name:           kplayer
 Epoch:          1
 Version:        0.7.0
-Release:        6.%cvsversion%{?dist}
+Release:        7.%cvsversion%{?dist}
 Summary:        A media player based on MPlayer
 Group:          Applications/Multimedia
 License:        GPLv3+ and GFDL
@@ -123,6 +123,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Fri Mar 02 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:0.7.0-7.20081211cvs
+- Rebuilt for c++ ABI breakage
+
 * Wed Feb 08 2012 Nicolas Chauvet <kwizart@gmail.com> - 1:0.7.0-6.20081211cvs
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
 
