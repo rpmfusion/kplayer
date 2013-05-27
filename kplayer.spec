@@ -3,7 +3,7 @@
 Name:           kplayer
 Epoch:          1
 Version:        0.7.0
-Release:        8.%cvsversion%{?dist}
+Release:        9.%cvsversion%{?dist}
 Summary:        A media player based on MPlayer
 Group:          Applications/Multimedia
 License:        GPLv3+ and GFDL
@@ -123,6 +123,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Mon May 27 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:0.7.0-9.20081211cvs
+- Rebuilt for x264/FFmpeg
+
 * Sun Mar 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:0.7.0-8.20081211cvs
 - Mass rebuilt for Fedora 19 Features
 
