@@ -1,0 +1,36 @@
+diff -up kplayer/doc/da/CMakeLists.txt.docdir kplayer/doc/da/CMakeLists.txt
+--- kplayer/doc/da/CMakeLists.txt.docdir	2008-01-11 12:24:07.000000000 -0600
++++ kplayer/doc/da/CMakeLists.txt	2014-01-11 13:45:42.227980534 -0600
+@@ -1 +1 @@
+-kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR})
++kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR}/da SUBDIR kplayer )
+diff -up kplayer/doc/en/CMakeLists.txt.docdir kplayer/doc/en/CMakeLists.txt
+--- kplayer/doc/en/CMakeLists.txt.docdir	2008-01-11 12:24:07.000000000 -0600
++++ kplayer/doc/en/CMakeLists.txt	2014-01-11 13:45:49.717910628 -0600
+@@ -1 +1 @@
+-kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR})
++kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR}/en SUBDIR kplayer )
+diff -up kplayer/doc/es/CMakeLists.txt.docdir kplayer/doc/es/CMakeLists.txt
+--- kplayer/doc/es/CMakeLists.txt.docdir	2008-01-11 12:24:07.000000000 -0600
++++ kplayer/doc/es/CMakeLists.txt	2014-01-11 13:45:56.159850460 -0600
+@@ -1 +1 @@
+-kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR})
++kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR}/es SUBDIR kplayer )
+diff -up kplayer/doc/it/CMakeLists.txt.docdir kplayer/doc/it/CMakeLists.txt
+--- kplayer/doc/it/CMakeLists.txt.docdir	2008-01-11 12:24:07.000000000 -0600
++++ kplayer/doc/it/CMakeLists.txt	2014-01-11 13:46:00.887806301 -0600
+@@ -1 +1 @@
+-kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR})
++kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR}/it SUBDIR kplayer )
+diff -up kplayer/doc/pt/CMakeLists.txt.docdir kplayer/doc/pt/CMakeLists.txt
+--- kplayer/doc/pt/CMakeLists.txt.docdir	2008-01-11 12:24:07.000000000 -0600
++++ kplayer/doc/pt/CMakeLists.txt	2014-01-11 13:46:05.472763478 -0600
+@@ -1 +1 @@
+-kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR})
++kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR}/pt SUBDIR kplayer )
+diff -up kplayer/doc/sv/CMakeLists.txt.docdir kplayer/doc/sv/CMakeLists.txt
+--- kplayer/doc/sv/CMakeLists.txt.docdir	2008-01-11 12:24:07.000000000 -0600
++++ kplayer/doc/sv/CMakeLists.txt	2014-01-11 13:46:11.402708094 -0600
+@@ -1 +1 @@
+-kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR})
++kde4_create_handbook(index.docbook INSTALL_DESTINATION ${HTML_INSTALL_DIR}/sv SUBDIR kplayer )

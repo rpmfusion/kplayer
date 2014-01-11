@@ -3,9 +3,8 @@
 Name:           kplayer
 Epoch:          1
 Version:        0.7.0
-Release:        9.%cvsversion%{?dist}
+Release:        10.%cvsversion%{?dist}
 Summary:        A media player based on MPlayer
-Group:          Applications/Multimedia
 License:        GPLv3+ and GFDL
 URL:            http://kplayer.sourceforge.net/
 Source0:        %{name}-%{version}-%cvsversion.tar.bz2
@@ -14,11 +13,12 @@ Source1:        %{name}-snapshot.sh
 Patch0:         %{name}-linking.patch
 # Match the .desktop file to freedesktop standards
 Patch1:         %{name}-desktop-fix.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+# Fix docdir install path
+Patch2:         %{name}-docdir.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
-BuildRequires:  kdelibs-devel
+BuildRequires:  kdelibs4-devel
 
 Requires:       mplayer
 #Requires(hint): libdvdcss
@@ -42,56 +42,32 @@ KDE standards.  Features include
 %setup -q -n %{name}
 %patch0 -p1 -b .linking
 %patch1 -p1 -b .fixdesktop
+%patch2 -p1 -b .docdir
 
-%{cmake_kde4} -DCMAKE_SKIP_RPATH:BOOL=ON .
+%{cmake_kde4} .
 
 # Fix documentation build
 sed -i 's|V4.1.2|V4.2|' doc/*/index.docbook
 
 %build
-make %{?_smp_mflags} VERBOSE=1 
+make %{?_smp_mflags} 
 
 %install
-rm -rf %{buildroot}
-
-make install DESTDIR=%{buildroot} 
+make install/fast DESTDIR=%{buildroot} 
 
 ## File lists
 # locale's
-%find_lang %{name} || touch %{name}.lang
-# HTML (1.0)
-HTML_DIR=$(kde4-config --expandvars --install html)
-if [ -d %{buildroot}$HTML_DIR ]; then
-for lang_dir in %{buildroot}$HTML_DIR/* ; do
-  if [ -d $lang_dir ]; then
-    lang=$(basename $lang_dir)
-    # Install HTML docs in the correct location and
-    mv $lang_dir $lang_dir.TMP
-    mkdir $lang_dir
-    mv $lang_dir.TMP $lang_dir/%{name}
-    echo "%lang($lang) $HTML_DIR/$lang/*" >> %{name}.lang
-    # replace absolute symlinks with relative ones
-    pushd $lang_dir
-      for i in *; do
-        [ -d $i -a -L $i/common ] && rm -f $i/common && ln -sf ../common $i/common
-      done
-    popd
-  fi
-done
-fi
+%find_lang %{name} --with-kde 
 
 # Install servicemenus in the correct location:
 mkdir -p %{buildroot}%{_kde4_datadir}/kde4/services/ServiceMenus/
-mv %{buildroot}%{_kde4_datadir}/kde4/apps/konqueror/servicemenus/* \
+mv %{buildroot}%{_kde4_appsdir}/konqueror/servicemenus/* \
    %{buildroot}%{_kde4_datadir}/kde4/services/ServiceMenus/
 
 
 %check
 desktop-file-validate \
    %{buildroot}%{_kde4_datadir}/applications/kde4/kplayer.desktop
-
-%clean
-rm -rf %{buildroot}
 
 
 %post
@@ -109,20 +85,23 @@ update-desktop-database &> /dev/null || :
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
-
 %files -f %{name}.lang
-%defattr(-,root,root,-)
 %doc AUTHORS BUGS ChangeLog COPYING* README TODO
 %{_kde4_bindir}/%{name}
 %{_kde4_datadir}/applications/kde4/*%{name}.desktop
-%{_kde4_datadir}/kde4/apps/%{name}/
+%{_kde4_appsdir}/%{name}/
 %{_kde4_datadir}/kde4/services/*%{name}*.desktop
-%{_kde4_datadir}/kde4/services/ServiceMenus/
-%{_kde4_datadir}/icons/hicolor/*/*/*
+%{_kde4_datadir}/kde4/services/ServiceMenus/*
+%{_kde4_iconsdir}/hicolor/*/*/*
 %{_kde4_libdir}/kde4/lib%{name}part.*
 
 
 %changelog
+* Sat Jan 11 2014 Rex Dieter <rdieter@fedoraproject.org> 1:0.7.0-10.20081211cvs
+- respin desktop-fix.patch so kbuildsycoca4 is happy too
+- docdir.patch
+- .spec cleanup
+
 * Mon May 27 2013 Nicolas Chauvet <kwizart@gmail.com> - 1:0.7.0-9.20081211cvs
 - Rebuilt for x264/FFmpeg
 
