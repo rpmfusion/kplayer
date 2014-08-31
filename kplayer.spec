@@ -3,7 +3,7 @@
 Name:           kplayer
 Epoch:          1
 Version:        0.7.0
-Release:        10.%cvsversion%{?dist}
+Release:        11.%cvsversion%{?dist}
 Summary:        A media player based on MPlayer
 License:        GPLv3+ and GFDL
 URL:            http://kplayer.sourceforge.net/
@@ -97,6 +97,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Sun Aug 31 2014 Sérgio Basto <sergio@serjux.com> - 1:0.7.0-11.20081211cvs
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_21_22_Mass_Rebuild
+
 * Sat Jan 11 2014 Rex Dieter <rdieter@fedoraproject.org> 1:0.7.0-10.20081211cvs
 - respin desktop-fix.patch so kbuildsycoca4 is happy too
 - docdir.patch
