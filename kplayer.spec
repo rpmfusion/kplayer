@@ -1,20 +1,14 @@
-%define cvsversion 20081211cvs
-
 Name:           kplayer
 Epoch:          1
-Version:        0.7.0
-Release:        12.%cvsversion%{?dist}
+Version:        0.7.2
+Release:        1%{?dist}
 Summary:        A media player based on MPlayer
 License:        GPLv3+ and GFDL
-URL:            http://kplayer.sourceforge.net/
-Source0:        %{name}-%{version}-%cvsversion.tar.bz2
-Source1:        %{name}-snapshot.sh
-# Fix DSO linking
-Patch0:         %{name}-linking.patch
+URL:            https://github.com/KDE/kplayer
+Source0:        %url/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+
 # Match the .desktop file to freedesktop standards
-Patch1:         %{name}-desktop-fix.patch
-# Fix docdir install path
-Patch2:         %{name}-docdir.patch
+Patch0:         %{name}-desktop-fix.patch
 
 BuildRequires:  desktop-file-utils
 BuildRequires:  gettext
@@ -39,18 +33,14 @@ KDE standards.  Features include
 
 
 %prep
-%setup -q -n %{name}
-%patch0 -p1 -b .linking
-%patch1 -p1 -b .fixdesktop
-%patch2 -p1 -b .docdir
-
-%{cmake_kde4} .
+%autosetup -p1
 
 # Fix documentation build
 sed -i 's|V4.1.2|V4.2|' doc/*/index.docbook
 
 %build
-make %{?_smp_mflags} 
+%{cmake_kde4} .
+%make_build 
 
 %install
 make install/fast DESTDIR=%{buildroot} 
@@ -59,34 +49,25 @@ make install/fast DESTDIR=%{buildroot}
 # locale's
 %find_lang %{name} --with-kde 
 
-# Install servicemenus in the correct location:
-mkdir -p %{buildroot}%{_kde4_datadir}/kde4/services/ServiceMenus/
-mv %{buildroot}%{_kde4_appsdir}/konqueror/servicemenus/* \
-   %{buildroot}%{_kde4_datadir}/kde4/services/ServiceMenus/
-
-
 %check
-desktop-file-validate \
-   %{buildroot}%{_kde4_datadir}/applications/kde4/kplayer.desktop
-
+desktop-file-validate %{buildroot}%{_kde4_datadir}/applications/kde4/kplayer.desktop
 
 %post
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-update-desktop-database &> /dev/null || :
+/bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 
 %postun
 if [ $1 -eq 0 ] ; then
-    touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-    gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+    /bin/touch --no-create %{_datadir}/icons/hicolor &>/dev/null
+    /usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 fi
-update-desktop-database &> /dev/null || :
 
 %posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
+/usr/bin/gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %files -f %{name}.lang
-%doc AUTHORS BUGS ChangeLog COPYING* README TODO
+%doc AUTHORS BUGS ChangeLog README TODO
+%license COPYING*
 %{_kde4_bindir}/%{name}
 %{_kde4_datadir}/applications/kde4/*%{name}.desktop
 %{_kde4_appsdir}/%{name}/
@@ -97,6 +78,9 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 
 %changelog
+* Tue Jul 11 2017 Leigh Scott <leigh123linux@googlemail.com> - 1:0.7.2-1
+- kplayer-0.7.2
+
 * Sun Mar 19 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 1:0.7.0-12.20081211cvs
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
 
