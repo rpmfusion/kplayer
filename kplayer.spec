@@ -4,8 +4,8 @@ Version:        0.7.2
 Release:        1%{?dist}
 Summary:        A media player based on MPlayer
 License:        GPLv3+ and GFDL
-URL:            https://github.com/KDE/kplayer
-Source0:        %url/archive/v%{version}.tar.gz#/%{name}-%{version}.tar.gz
+URL:            http://kplayer.sourceforge.net/
+Source0:        https://download.kde.org/stable/%{name}/%{version}/src/%{name}-%{version}.tar.xz
 
 # Match the .desktop file to freedesktop standards
 Patch0:         %{name}-desktop-fix.patch
